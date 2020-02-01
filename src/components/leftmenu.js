@@ -3,11 +3,12 @@ import { ReactComponent as Img } from "/src/res/menu.svg";
 
 function StorageMenuItem(props) {
   const storage = props.storage;
-  const [storageId, setStorageId] = useState(false);
-  const selectStorage = (el) => setStorageId(el.data.id)
+  const [storageId, setStorageId] = useState(storage.id);
+  const selectStorage = (el) => setStorageId(el.dataset.id)
+  const hash = '#storage-' + storageId;
   return (
     <li>
-      <a href="#{storage.id}" className="text-reset" onClick={selectStorage}>{storage.name}</a>
+      <a href={hash} data-id={storageId} className="text-reset" onClick={(ev) => console.log(ev)}>{storage.name}</a>
     </li>
   );
 }
@@ -15,8 +16,10 @@ function StorageMenuItem(props) {
 export function LeftMenu(props) {  
   const [expanded, setExpanded] = useState(false);
   const items = props.storages.map((m) => <StorageMenuItem storage={m} />);
+  let classNames = ['expandable'];
+  classNames.push(expanded ? "expanded p-3" : 'm-3');
   return (
-    <section id="left-menu" className={expanded ? "expanded p-3" : "m-3"}>
+    <section id="left-menu" className={classNames.join(' ')}>
       <a href="#left-menu" onClick={() => setExpanded(!expanded)} className="icon">
         <Img />
       </a>

@@ -1,5 +1,6 @@
 import React from "react";
 import { LeftMenu } from "./components/leftmenu";
+import { SettingsMenu } from "./components/settingsmenu"
 import "./res/validator.css";
 
 let Settings = {
@@ -70,9 +71,10 @@ export default function Validator() {
   let storage = StorageList.find(storage => storage.id === Settings.storageId);
   return (
     <div id="validator">
-      <Header cinema={Cinema} storage={storage} />
-      <LeftMenu cinema={Cinema} storages={StorageList} settings={Settings} />
+      <Header cinema={Cinema} storage={storage} />      
       <CodeForm />
+      <LeftMenu cinema={Cinema} storages={StorageList} settings={Settings} />
+      <SettingsMenu settings={Settings} />
     </div>
   );
 }

@@ -9,20 +9,40 @@ header {
 form.code {
 }
 
+.icon svg {
+  width: 2rem;
+  height: 2rem;
+}
+
 #left-menu {
   text-align: left;
   position: absolute;
-  top:0; left:0;
-  background-color:#2c91e9;
-  color:#fff;
+  top: 0;
+  left: 0;
+  background-color: #2c91e9;
+  color: #fff;
 }
 #left-menu .icon {
-  fill:#fff;
+  fill: #fff;
 }
-#left-menu .content {
+#settings-menu {
+  text-align: left;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #2c91e9;
+  color: #fff;
+}
+#settings-menu .icon {
+  fill: #fff;
+  display: block;
+  text-align: right;
+}
+
+.expandable .content {
   display: none;
 }
-#left-menu.expanded .content {
+.expandable.expanded .content {
   display: block;
 }
 
