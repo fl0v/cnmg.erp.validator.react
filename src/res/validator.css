@@ -1,0 +1,30 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+header {
+}
+
+form.code {
+}
+
+#left-menu {
+  text-align: left;
+}
+#left-menu .icon {
+  background-image: url(menu.svg);
+  width: 2rem;
+  height: 2rem;
+  display: inline-block;
+}
+#left-menu .content {
+  display: none;
+}
+#left-menu.expanded .content {
+  display: block;
+}
+
+form.code .form-group {
+  max-width: 20rem;
+}
