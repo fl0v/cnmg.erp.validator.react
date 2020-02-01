@@ -11,12 +11,13 @@ form.code {
 
 #left-menu {
   text-align: left;
+  position: absolute;
+  top:0; left:0;
+  background-color:#2c91e9;
+  color:#fff;
 }
 #left-menu .icon {
-  background-image: url(menu.svg);
-  width: 2rem;
-  height: 2rem;
-  display: inline-block;
+  fill:#fff;
 }
 #left-menu .content {
   display: none;
