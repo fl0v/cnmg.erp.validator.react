@@ -25,6 +25,9 @@ form.code {
 #left-menu .icon {
   fill: #fff;
 }
+#left-menu .active {
+  font-weight: bold;
+}
 #settings-menu {
   text-align: left;
   position: absolute;
