@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Context = React.createContext();
 const Consumer = Context.Consumer;
@@ -8,10 +8,10 @@ const Provider = Context.Provider;
 class SettingsContextProvider extends React.Component {
   state = {
     settings: {
-      title: "Validator",
-      apiBaseUrl: "http://localhost",
-      apiLicense: "my-license-1231231"
-    }
+      title: 'Validator',
+      apiBaseUrl: 'http://localhost',
+      apiLicense: 'my-license-1231231',
+    },
   };
 
   render() {
@@ -19,7 +19,7 @@ class SettingsContextProvider extends React.Component {
       <Provider
         value={{
           settings: this.state.settings,
-          setSettings: settings => this.setState({ settings })
+          setSettings: (settings) => this.setState({ settings }),
         }}
       >
         {this.props.children}
@@ -31,5 +31,5 @@ class SettingsContextProvider extends React.Component {
 export {
   SettingsContextProvider,
   Consumer as SettingsContextConsumer,
-  Context as SettingsContext
+  Context as SettingsContext,
 };

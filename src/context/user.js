@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const UserContext = React.createContext();
 
@@ -7,8 +7,8 @@ class UserProvider extends React.Component {
     user: {
       id: 123,
       token: 'sdflf3r435',
-      username: 'admin',    
-    }
+      username: 'admin',
+    },
   };
 
   render() {
@@ -16,7 +16,7 @@ class UserProvider extends React.Component {
       <UserContext.Provider
         value={{
           user: this.state.user,
-          setUser: user => {
+          setUser: (user) => {
             this.setState({ user });
           },
         }}
@@ -27,8 +27,4 @@ class UserProvider extends React.Component {
   }
 }
 
-
-export {
-  UserContext,
-  UserProvider,
-}
+export { UserContext, UserProvider };

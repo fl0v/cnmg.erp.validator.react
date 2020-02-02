@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Context = React.createContext();
 const Consumer = Context.Consumer;
@@ -9,18 +9,18 @@ class StorageContextProvider extends React.Component {
   state = {
     storage: {
       id: 1,
-      name: "Depozit"
+      name: 'Depozit',
     },
     storageList: [
       {
         id: 1,
-        name: "Depozit"
+        name: 'Depozit',
       },
       {
         id: 2,
-        name: "Bar 1"
-      }
-    ]
+        name: 'Bar 1',
+      },
+    ],
   };
 
   render() {
@@ -29,15 +29,15 @@ class StorageContextProvider extends React.Component {
         value={{
           storage: this.state.storage,
           storageList: this.state.storageList,
-          setStorageId: id => {
+          setStorageId: (id) => {
             const storage = this.state.storageList.find(
-              storage => storage.id === id
-            );            
+              (storage) => storage.id === id
+            );
             this.setState({ storage });
           },
-          setStorageList: storageList => {
+          setStorageList: (storageList) => {
             this.setState({ storageList });
-          }
+          },
         }}
       >
         {this.props.children}
@@ -49,5 +49,5 @@ class StorageContextProvider extends React.Component {
 export {
   StorageContextProvider,
   Consumer as StorageContextConsumer,
-  Context as StorageContext
+  Context as StorageContext,
 };
