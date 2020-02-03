@@ -1,3 +1,9 @@
+// Override default variables before the import
+// https://getbootstrap.com/docs/4.4/getting-started/theming/
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+
 body {
   font-family: sans-serif;
   text-align: center;
@@ -47,6 +53,17 @@ form.code {
 }
 .expandable.expanded .content {
   display: block;
+}
+.fullscreen {
+  @include size(100%,100%);
+  padding: $spacer;
+}
+.loading {
+  opacity:0.5;
+}
+.loading button {
+  pointer-events: none;
+  @include box-shadow(none);
 }
 
 form.code .form-group {

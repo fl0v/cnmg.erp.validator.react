@@ -5,7 +5,7 @@ import { ReactComponent as Img } from '/src/res/menu.svg';
 function StorageMenuItem(props) {
   const { active, storage, setStorageId } = props;
   return (
-    <li className={active && 'active'}>
+    <li className={(active && 'active').toString()}>
       <a href="#" className="text-reset" onClick={setStorageId}>
         {storage.name}
       </a>
@@ -28,6 +28,7 @@ export default function LeftMenu(props) {
           <ul className="content list-unstyled">
             {context.storageList.map((storage) => (
               <StorageMenuItem
+                key={storage.id}
                 storage={storage}
                 setStorageId={() => context.setStorageId(storage.id)}
                 active={storage.id === context.storage.id}

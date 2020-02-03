@@ -2,8 +2,8 @@ import React from 'react';
 
 function CodeMessage(props) {
   const messages = props.messages;
-  const html = messages.map((m) => (
-    <li dangerouslySetInnerHTML={{ __html: m }} />
+  const html = messages.map((m, index) => (
+    <li key={index} dangerouslySetInnerHTML={{ __html: m }} />
   ));
   return <ul className="messages list-unstyled">{html}</ul>;
 }
