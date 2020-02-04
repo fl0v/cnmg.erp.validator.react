@@ -6,7 +6,7 @@ import Header from './components/header';
 import LeftMenu from './components/leftmenu';
 import SettingsMenu from './components/settingsmenu';
 import CodeForm from './components/codeform';
-import './res/validator.scss';
+import './res/validator.css';
 
 export default class Validator extends React.Component {
   render() {

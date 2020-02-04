@@ -1,7 +1,8 @@
 import React from 'react';
+import Api from '/src/api';
 import { SettingsContext } from '/src/context/settings-context';
 import { ReactComponent as Img } from '/src/res/settings.svg';
-import Api from '/src/api';
+
 
 function SettingItem(props) {
   const { name, value } = props;
@@ -71,9 +72,10 @@ export default class SettingsMenu extends React.Component {
     const settings = Object.assign({}, this.context.settings);
     return (
       <section id="settings-menu" className={classNames.join(' ')}>
-        <a href="#settings-menu" onClick={onClick} className="icon">
+      <a href="#settings-menu" onClick={onClick} className="icon">
           <Img />
         </a>
+
         <form className="content" onSubmit={this.handleSubmit}>
           {Object.keys(settings).map((key) => (
             <SettingItem key={key} name={key} value={settings[key]} />
