@@ -1,5 +1,5 @@
 import React from 'react';
-import Api from '/src/api';
+import { Api } from '/src/api';
 import { SettingsContext } from '/src/context/settings-context';
 
 function CodeMessage(props) {
@@ -22,7 +22,7 @@ function CodeMessage(props) {
   }
 }
 
-export default class FormCode extends React.Component {
+export default class FormValidate extends React.Component {
   static contextType = SettingsContext;
   state = {
     code: '',
@@ -38,15 +38,13 @@ export default class FormCode extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { api } = this.context;
 
     this.setState({ loading: true });
     const form = event.target;
     const data = new FormData(form);
     const code = data.get('code');
 
-    new Api()
-      .validate(code)
+    Api.validate(code)
       .then((response) => {
         if (response.error) {
           this.setState({

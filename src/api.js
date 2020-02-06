@@ -1,18 +1,14 @@
 /**
- * Clasa generica care se instantiaza tot timpul cu toate setarile sin SettingsContext
- * Nu am reusit inca sa o fac sa-si ia automat contextul...
+ * Clasa generica, o instantiem o singura data pe aplicatie si apoi folosim Api
  */
-export default class Api {
+class ApiClass {
   apiLicenseHeader = 'X-CNMG-LicenseKey';
-  tokenStorageName = 'api_user_token';
+  storageName = '__api__';
   settings = {
-    api: {
-      apiBaseUrl: '',
-      apiLicense: '',
-    },
-    storage: {
-      id: null,
-    },
+    apiBaseUrl: '',
+    apiLicense: '',
+    token: null,
+    storage_id: null,
   };
   callOptions = {
     method: 'POST', // or 'PUT'
@@ -28,14 +24,26 @@ export default class Api {
   };
 
   constructor(settings) {
-    this.settings = Object.assign({}, settings);
+    this.useSettings(settings);
+  }
+
+  useSettings(settings) {
+    this.settings = Object.assign(this.settings, settings);
   }
 
   async call(method, callUrl, data = {}) {
-    let url = new URL(
-      callUrl.replace(/^\/|\/$/g, ''),
-      this.settings.api.apiBaseUrl.replace(/^\/|\/$/g, '') + '/'
-    );
+    callUrl = callUrl.replace(/^\/|\/$/g, '');
+    let baseUrl =
+      this.settings.apiBaseUrl &&
+      this.settings.apiBaseUrl.replace(/^\/|\/$/g, '');
+    if (!callUrl || callUrl.length === 0) {
+      throw new Error('Empty call url!');
+    }
+    if (!baseUrl || baseUrl.length === 0) {
+      throw new Error('Empty apiBaseUrl!');
+    }
+
+    let url = new URL(callUrl, baseUrl + '/');
     const options = {
       ...this.callOptions,
       method: method,
@@ -45,11 +53,10 @@ export default class Api {
     } else if (data) {
       options.body = JSON.stringify(data);
     }
-    options.headers.push([this.apiLicenseHeader, this.settings.api.apiLicense]);
+    options.headers.push([this.apiLicenseHeader, this.settings.apiLicense]);
 
-    const token = window.localStorage.getItem(this.tokenStorageName);
-    if (token) {
-      options.headers.push(['Authorization', `Bearer ${token}`]);
+    if (this.settings.token) {
+      options.headers.push(['Authorization', `Bearer ${this.settings.token}`]);
     }
 
     console.log(method, url.toString(), options.body, options);
@@ -93,8 +100,11 @@ export default class Api {
   validate(code, validate) {
     return this.call('POST', '/validator/validate', {
       code: code,
-      storage_id: this.settings.storage.id,
+      storage_id: this.settings.storage_id,
       validate: validate,
     });
   }
 }
+
+const Api = new ApiClass();
+export { Api, ApiClass }; // e nevoie de ApiClass ca sa creem instanta noua pentru a testa setarile introduse cand pornim aplicatia

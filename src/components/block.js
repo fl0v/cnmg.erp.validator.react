@@ -1,17 +1,12 @@
 import React from 'react';
 
-export default class ExpandableBlock extends React.Component {
+export default class Block extends React.Component {
   state = {
     expanded: this.props.fullscreen,
     loading: false,
     error: '',
   };
   extraClassNames = '';
-
-  constructor(props) {
-    super(props);
-    this.toggle.bind(this);
-  }
 
   loading() {
     this.setState({ loading: true });
@@ -35,11 +30,13 @@ export default class ExpandableBlock extends React.Component {
   }
 
   classNames() {
-    let classNames = ['expandable', this.extraClassNames];
-    if (this.props.fullscreen) {
-      classNames.push(this.state.expanded ? 'fullscreen expanded p-3' : 'm-3');
+    let classNames = ['block', this.extraClassNames];
+    if (!this.state.expanded) {
+      classNames.push('collapsed m-3');
+    } else if (this.props.fullscreen) {
+      classNames.push('fullscreen p-3');
     } else {
-      classNames.push(this.state.expanded ? 'expanded p-3' : 'm-3');
+      classNames.push('p-3');
     }
     classNames.push(this.state.loading ? 'loading' : '');
     return classNames.join(' ');
@@ -49,14 +46,12 @@ export default class ExpandableBlock extends React.Component {
   content() {}
 
   render() {
-    const content = this.content();
-    const icon = this.icon();
     return (
       <section className={this.classNames()}>
-        <a href="#" onClick={this.toggle} className="toggle">
-          {icon}
+        <a href="#" onClick={() => this.toggle()} className="icon">
+          {this.icon()}
         </a>
-        {content}
+        {this.content()}
       </section>
     );
   }

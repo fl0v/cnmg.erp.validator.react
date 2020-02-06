@@ -1,7 +1,8 @@
 import React from 'react';
 import { SettingsContext, SettingsMeta } from './settings-context';
-import FormApiSettings from '../components/form-api-settings';
+import FormApiSettings from '/src/components/form-api-settings';
 import FormLogin from '/src/components/form-login';
+import { SelectStorage } from '/src/components/select-storage';
 
 export default class SettingsContextProvider extends React.Component {
   static contextType = SettingsContext;
@@ -26,11 +27,17 @@ export default class SettingsContextProvider extends React.Component {
     return this.state.user.id > 0;
   }
 
+  haveStorage() {
+    return this.state.storage.id > 0;
+  }
+
   render() {
     const content = !this.haveApiSettings() ? (
-      <FormApiSettings fullscreen="true" />
+      <FormApiSettings />
     ) : !this.haveUser() ? (
-      <FormLogin fullscreen="true" />
+      <FormLogin />
+    ) : !this.haveStorage() ? (
+      <SelectStorage />
     ) : (
       this.props.children
     );
@@ -43,13 +50,15 @@ export default class SettingsContextProvider extends React.Component {
           cinema: this.state.cinema,
           storage: this.state.storage,
           storageList: this.state.storageList,
+          setSettings: (settings) => {
+            const all = Object.assign(this.state, settings);
+            this.setState(all);
+          },
           setApiSettings: (api) => this.setState({ api }),
+          setStorage: (storage) => this.setState({ storage }),
           haveApiSettings: () => this.haveApiSettings(),
           haveUser: () => this.haveUser(),
-          login: (user, token) =>
-            this.setState({ user: { ...user, token: token } }),
-          selectStorage: (storage) => this.setState({ storage }),
-          setSettings: (settings) => this.setState(settings),
+          haveStorage: () => this.haveStorage(),
         }}
       >
         {content}

@@ -1,70 +1,80 @@
 import React from 'react';
-import Api from '/src/api';
-import ExpandableBlock from '/src/components/expandableblock';
-import FormRow from '/src/components/form-row';
+import { Api, ApiClass } from '/src/api';
 import { SettingsContext, SettingsMeta } from '/src/context/settings-context';
+import FormRow from '/src/components/form-row';
 import { ReactComponent as Img } from '/src/res/settings.svg';
 
-export default class SettingsMenu extends ExpandableBlock {
+export default class FormApiSettings extends React.Component {
   static contextType = SettingsContext;
+  state = {
+    loading: false,
+    error: '',
+  };
 
   constructor(props) {
     super(props);
-    this.extraClassNames = 'blue top-right';
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  error(message) {
+    this.setState({
+      loading: false,
+      error: 'Invalid api url or license! (' + message + ')',
+    });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.loading();
+    this.setState({ loading: true });
 
     const form = event.target;
     const data = new FormData(form);
-    let apiSettings = {};
+    let settings = {};
     for (var pair of data.entries()) {
-      apiSettings[pair[0]] = pair[1];
+      settings[pair[0]] = pair[1];
     }
 
-    // test api
-    new Api({ api: apiSettings })
+    // instanta noua ca sa testam setarile
+    new ApiClass(settings)
       .ping()
       .then((response) => {
-        this.context.setApiSettings(apiSettings);
-        //this.done();
+        Api.useSettings(settings); // salvam in instanta permanenta intantiata la lansarea aplicatie
+        this.context.setApiSettings(settings); // va declansa render pe aplicatie
       })
-      .catch((error) =>
-        this.error('Invalid api url or license! (' + error.message + ')')
-      );
-  }
-  icon() {
-    return <Img />;
+      .catch((error) => this.error(error.message));
   }
 
-  content() {
+  render() {
     const { api } = this.context;
     const { labels, editable, types } = SettingsMeta;
     return (
-      <div className="content">
-        <form onSubmit={this.handleSubmit}>
-          {editable.map((key) => (
-            <FormRow
-              key={key}
-              type={types[key]}
-              label={labels[key]}
-              name={key}
-              value={api[key]}
-            />
-          ))}
-          <button type="submit" className="btn btn-success w-100">
-            Next
-          </button>
-        </form>
-        {this.state.error.length > 0 && (
-          <div className="alert alert-danger text-center my-3">
-            {this.state.error}
-          </div>
-        )}
-      </div>
+      <section className="block blue fullscreen p-3 top-right">
+        <span className="icon">
+          <Img />
+        </span>
+
+        <div className="content">
+          <form onSubmit={this.handleSubmit}>
+            {editable.map((key) => (
+              <FormRow
+                key={key}
+                type={types[key]}
+                label={labels[key]}
+                name={key}
+                value={api[key]}
+              />
+            ))}
+            <button type="submit" className="btn btn-success w-100">
+              Next
+            </button>
+          </form>
+          {this.state.error.length > 0 && (
+            <div className="alert alert-danger text-center my-3">
+              {this.state.error}
+            </div>
+          )}
+        </div>
+      </section>
     );
   }
 }

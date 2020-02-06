@@ -1,7 +1,8 @@
 import React from 'react';
 import SettingsContextProvider from '/src/context/settings-provider';
 import Header from '/src/components/header';
-import FormCode from '/src/components/form-code';
+import FormValidate from '/src/components/form-validate';
+import Menu from '/src/components/menu';
 import '/src/res/validator.css';
 
 export default class Validator extends React.Component {
@@ -10,7 +11,8 @@ export default class Validator extends React.Component {
       <div id="validator">
         <SettingsContextProvider>
           <Header />
-          <FormCode />
+          <FormValidate />
+          <Menu />
         </SettingsContextProvider>
       </div>
     );

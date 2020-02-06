@@ -5,31 +5,28 @@ const SettingsContext = React.createContext({
     apiBaseUrl: '',
     apiLicense: '',
   },
-  haveApiSettings: () => {},
-  setApiSettings: () => {},
-
   user: {
     id: null,
     username: null,
     token: null,
   },
-  login: () => {},
-  haveUser: () => {},
-
   cinema: {
     id: null,
     code: null,
     name: null,
   },
-
   storage: {
     id: null,
     name: null,
   },
   storageList: [],
-  selectStorage: () => {},
 
   setSettings: () => {},
+  haveApiSettings: () => {},
+  setStorage: () => {},
+  setApiSettings: () => {},
+  haveUser: () => {},
+  haveStorage: () => {},
 });
 
 const SettingsMeta = {
@@ -38,7 +35,7 @@ const SettingsMeta = {
     apiLicense: 'License',
   },
   types: {
-    apiLicense: 'password',
+    apiLicense: 'text',
   },
   visible: ['apiBaseUrl', 'apiLicense'],
   editable: ['apiBaseUrl', 'apiLicense'],

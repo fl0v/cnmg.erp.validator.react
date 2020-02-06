@@ -3,56 +3,16 @@ body {
   text-align: center;
 }
 
-.expandable .icon svg {
-  width: 2rem;
-  height: 2rem;
+.block.collapsed .content {
+  display: none;
 }
-
-.blue {
-  background-color: #2c91e9;
-  color: #fff;
-}
-.blue .toggle svg {
-  fill: #fff;
-}
-
-.top-center {
-  position: absolute;
-  top: 0;
-  text-align: center;
-  width:100%;
-}
-.top-right {
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: left;
-}
-.top-right .toggle {
+.block .icon {
   display: block;
   text-align: right;
 }
-
-.top-left {
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: left;
-}
-.top-rleft .icon {
-  display: block;
-  text-align: left;
-}
-
-.active {
-  font-weight: bold;
-}
-
-.expandable .content {
-  display: none;
-}
-.expandable.expanded .content {
-  display: block;
+.block .icon svg {
+  width: 2rem;
+  height: 2rem;
 }
 .fullscreen {
   width: 100%;
@@ -64,6 +24,37 @@ body {
 .loading button {
   pointer-events: none;
 }
+.active {
+  font-weight: bold;
+}
+
+.blue {
+  background-color: #2c91e9;
+  color: #fff;
+}
+.blue .icon svg {
+  fill: #fff;
+}
+
+.top-center {
+  position: absolute;
+  top: 0;
+  text-align: center;
+}
+.top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: left;
+}
+
+.top-left {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: left;
+}
+
 
 form.code .form-group {
   max-width: 20rem;
