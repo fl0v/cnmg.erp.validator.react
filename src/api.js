@@ -3,7 +3,6 @@
  */
 class ApiClass {
   apiLicenseHeader = 'X-CNMG-LicenseKey';
-  storageName = '__api__';
   settings = {
     apiBaseUrl: '',
     apiLicense: '',
@@ -17,11 +16,11 @@ class ApiClass {
     cache: 'no-cache',
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *client
-    headers: [
-      ['Accept', 'application/json'],
-      ['Content-Type', 'application/json'],
-    ],
   };
+  callHeaders = [
+    ['Accept', 'application/json'],
+    ['Content-Type', 'application/json'],
+  ];
 
   constructor(settings) {
     this.useSettings(settings);
@@ -43,46 +42,51 @@ class ApiClass {
       throw new Error('Empty apiBaseUrl!');
     }
 
+    const options = Object.assign({}, this.callOptions);
+    options.method = method;
     let url = new URL(callUrl, baseUrl + '/');
-    const options = {
-      ...this.callOptions,
-      method: method,
-    };
     if (method === 'GET') {
       url += '?' + new URLSearchParams(data).toString();
     } else if (data) {
       options.body = JSON.stringify(data);
     }
-    options.headers.push([this.apiLicenseHeader, this.settings.apiLicense]);
+    const headers = Object.assign([], this.callHeaders);
+    headers.push([this.apiLicenseHeader, this.settings.apiLicense]);
 
     if (this.settings.token) {
-      options.headers.push(['Authorization', `Bearer ${this.settings.token}`]);
+      //headers.push(['Authorization', `Bearer ${this.settings.token}`]);
+      const bearer = Buffer.from(this.settings.token + ':').toString('base64');
+      headers.push(['Authorization', `Basic ${bearer}`]);
     }
+    options.headers = headers;
 
     console.log(method, url.toString(), options.body, options);
-    return window.fetch(url, options).then((response) => {
-      console.log('response', response.status, response.statusText);
-      let data = null;
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        data = response.json();
-      } else {
-        data = response.text();
-      }
-      if (response.ok) {
-        return data;
-      } else {
-        console.error('Invalid response!', data['[[PromiseValue]]']);
-        return Promise.reject(data);
-        //throw new Error('Invalid response!');
-      }
-    });
-    /*
-      .catch((error) => {
-        console.error(error);        
-        return Promise.reject(error);
+    return window
+      .fetch(url, options)
+      .then((response) => {
+        const contentType = response.headers.get('content-type');
+        const isJson = contentType && contentType.includes('application/json');
+        console.log('http', response.status, response.statusText, contentType);
+        if (isJson) {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return response.json().then((data) => {
+              console.error('Server error', data);
+              const msg = data.errorMessage || 'Undefined error';
+              return Promise.reject(new Error(msg));
+            });
+          }
+        }
+        return response.text().then((text) => {
+          console.error('Format error', text);
+          return Promise.reject(new Error('Invalid format!'));
+        });
+      })
+      .catch((err) => {
+        console.error('Api error!', err);
+        return Promise.reject(err);
       });
-      */
   }
 
   ping() {

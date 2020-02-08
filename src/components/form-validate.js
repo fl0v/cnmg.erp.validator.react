@@ -25,10 +25,10 @@ function CodeMessage(props) {
 export default class FormValidate extends React.Component {
   static contextType = SettingsContext;
   state = {
-    code: '',
+    code: null,
     loading: false,
     message: [],
-    error: '',
+    error: null,
   };
 
   constructor(props) {
@@ -38,7 +38,6 @@ export default class FormValidate extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
     this.setState({ loading: true });
     const form = event.target;
     const data = new FormData(form);
@@ -48,20 +47,26 @@ export default class FormValidate extends React.Component {
       .then((response) => {
         if (response.error) {
           this.setState({
-            code: '',
+            code: null,
             loading: false,
             message: [],
             error: response.error,
           });
         } else {
-          this.setState({ loading: false, message: response.message });
+          this.setState({
+            loading: false,
+            error: false,
+            code: response.code,
+            message: response.message,
+          });
         }
       })
       .catch((error) => {
         this.setState({
+          code: null,
           loading: false,
           message: [],
-          error: 'Error validateing code! (' + error.message + ')',
+          error: error.message,
         });
       });
   }
@@ -71,7 +76,7 @@ export default class FormValidate extends React.Component {
       <form className="code m-3" onSubmit={this.handleSubmit}>
         <CodeMessage
           code={this.state.code}
-          messages={this.state.message}
+          message={this.state.message}
           error={this.state.error}
         />
         <div className="form-group fixed-bottom m-3 mx-auto">

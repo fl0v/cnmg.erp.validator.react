@@ -19,8 +19,15 @@ export default class FormLogin extends React.Component {
   error(message) {
     this.setState({
       loading: false,
-      error: 'Invalid api url or license! (' + message + ')',
+      error: 'Authentication error! (' + message + ')',
     });
+  }
+
+  handleClickReset(event) {
+    event.preventDefault();
+    console.log('context', this.context);
+    //console.log('resetFunction', this.context.resetSettings);
+    //this.context.resetSettings();
   }
 
   handleSubmit(event) {
@@ -33,7 +40,7 @@ export default class FormLogin extends React.Component {
     Api.login(data.get('pin'))
       .then((response) => {
         if (response.token) {
-          Api.useSettings({ token: response.token }); // tinem token-ul in api ptr a-l folosi la urmatoarele apeluri
+          //Api.useSettings({ token: response.token }); // tinem token-ul in api ptr a-l folosi la urmatoarele apeluri
           this.context.setSettings({
             user: { ...response.user, token: response.token },
             cinema: response.cinema,
@@ -43,7 +50,7 @@ export default class FormLogin extends React.Component {
           this.error('Invalid response! ' + JSON.stringify(response));
         }
       })
-      .catch((error) => this.error(error.message));
+      .catch((error) => this.error(error.message || error));
   }
 
   render() {
@@ -63,6 +70,12 @@ export default class FormLogin extends React.Component {
             />
             <button type="submit" className="btn btn-success w-100">
               Login
+            </button>
+            <button
+              onClick={this.handleClickReset}
+              className="btn btn-default w-100"
+            >
+              Reset
             </button>
           </form>
           {this.state.error.length > 0 && (

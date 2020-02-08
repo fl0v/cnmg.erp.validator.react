@@ -51,10 +51,9 @@ body {
 .top-left {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   text-align: left;
 }
-
 
 form.code .form-group {
   max-width: 20rem;

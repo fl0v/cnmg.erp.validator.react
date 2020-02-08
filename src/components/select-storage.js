@@ -3,9 +3,10 @@ import { SettingsContext } from '/src/context/settings-context';
 
 function StorageItem(props) {
   const { active, storage, setStorage } = props;
+  const onClick = () => setStorage(storage);
   return (
     <li className={(active && 'active').toString()}>
-      <a href="#" className="text-reset" onClick={() => setStorage(storage)}>
+      <a href="#" className="text-reset" onClick={onClick}>
         {storage.name}
       </a>
     </li>
@@ -20,8 +21,8 @@ function StorageList(props) {
         <StorageItem
           key={storage.id}
           storage={storage}
-          onClick={setStorage}
-          active={storage.id === props.activeId}
+          setStorage={setStorage}
+          active={storage.id === activeId}
         />
       ))}
     </ul>
@@ -30,12 +31,15 @@ function StorageList(props) {
 
 class SelectStorage extends React.Component {
   static contextType = SettingsContext;
+
   render() {
     return (
       <section className="block blue fullscreen top-center p-3">
         <StorageList
           storageList={this.context.storageList}
-          setStorage={this.context.setStorage}
+          setStorage={(storage) =>
+            this.context.setSettings({ storage: storage })
+          }
           activeId={this.context.storage.id}
         />
       </section>

@@ -2,8 +2,8 @@ import React from 'react';
 
 const SettingsContext = React.createContext({
   api: {
-    apiBaseUrl: '',
-    apiLicense: '',
+    apiBaseUrl: '', //window.localStorage.getItem('apiBaseUrl'),
+    apiLicense: '', //window.localStorage.getItem('apiLicense'),
   },
   user: {
     id: null,
@@ -22,9 +22,8 @@ const SettingsContext = React.createContext({
   storageList: [],
 
   setSettings: () => {},
+  resetSettings: () => {},
   haveApiSettings: () => {},
-  setStorage: () => {},
-  setApiSettings: () => {},
   haveUser: () => {},
   haveStorage: () => {},
 });

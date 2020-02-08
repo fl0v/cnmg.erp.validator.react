@@ -1,5 +1,5 @@
 import React from 'react';
-import { Api, ApiClass } from '/src/api';
+import { ApiClass } from '/src/api';
 import { SettingsContext, SettingsMeta } from '/src/context/settings-context';
 import FormRow from '/src/components/form-row';
 import { ReactComponent as Img } from '/src/res/settings.svg';
@@ -37,11 +37,8 @@ export default class FormApiSettings extends React.Component {
     // instanta noua ca sa testam setarile
     new ApiClass(settings)
       .ping()
-      .then((response) => {
-        Api.useSettings(settings); // salvam in instanta permanenta intantiata la lansarea aplicatie
-        this.context.setApiSettings(settings); // va declansa render pe aplicatie
-      })
-      .catch((error) => this.error(error.message));
+      .then(() => this.context.setSettings({ api: settings }))
+      .catch((error) => this.error(error.message || error));
   }
 
   render() {

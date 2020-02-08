@@ -3,6 +3,7 @@ import { SettingsContext, SettingsMeta } from './settings-context';
 import FormApiSettings from '/src/components/form-api-settings';
 import FormLogin from '/src/components/form-login';
 import { SelectStorage } from '/src/components/select-storage';
+import { Api } from '/src/api';
 
 export default class SettingsContextProvider extends React.Component {
   static contextType = SettingsContext;
@@ -13,6 +14,11 @@ export default class SettingsContextProvider extends React.Component {
     storage: this.context.storage,
     storageList: this.context.storageList,
   };
+
+  componentDidMount() {
+    window.localStorage.setItem('apiBaseUrl', this.state.api.apiBaseUrl);
+    window.localStorage.setItem('apiLicense', this.state.api.apiLicense);
+  }
 
   haveApiSettings() {
     const { required } = SettingsMeta;
@@ -29,6 +35,28 @@ export default class SettingsContextProvider extends React.Component {
 
   haveStorage() {
     return this.state.storage.id > 0;
+  }
+
+  setSettings(settings) {
+    const all = Object.assign(this.state, settings);
+    Api.useSettings({
+      apiBaseUrl: all.api.apiBaseUrl,
+      apiLicense: all.api.apiLicense,
+      token: all.user.token,
+      storage_id: all.storage.id,
+    });
+    this.setState(settings);
+  }
+
+  resetSettings() {
+    //window.localStorage.removeItem('apiBaseUrl');
+    //window.localStorage.removeItem('apiLicense');
+    this.setState({
+      api: {
+        apiBaseUrl: '',
+        apiLicense: '',
+      },
+    });
   }
 
   render() {
@@ -50,12 +78,11 @@ export default class SettingsContextProvider extends React.Component {
           cinema: this.state.cinema,
           storage: this.state.storage,
           storageList: this.state.storageList,
-          setSettings: (settings) => {
-            const all = Object.assign(this.state, settings);
-            this.setState(all);
+          setSettings: (settings) => this.setSettings(settings),
+          resetSettings: () => {
+            console.log('asd');
+            //this.resetSettings();
           },
-          setApiSettings: (api) => this.setState({ api }),
-          setStorage: (storage) => this.setState({ storage }),
           haveApiSettings: () => this.haveApiSettings(),
           haveUser: () => this.haveUser(),
           haveStorage: () => this.haveStorage(),
