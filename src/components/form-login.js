@@ -14,6 +14,7 @@ export default class FormLogin extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClickReset = this.handleClickReset.bind(this);
   }
 
   error(message) {
@@ -24,14 +25,12 @@ export default class FormLogin extends React.Component {
   }
 
   handleClickReset(event) {
-    event.preventDefault();
-    console.log('context', this.context);
-    //console.log('resetFunction', this.context.resetSettings);
-    //this.context.resetSettings();
+    event.preventDefault();   
+    this.context.resetSettings();
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault();    
     this.setState({ loading: true });
 
     const form = event.target;
@@ -39,8 +38,7 @@ export default class FormLogin extends React.Component {
 
     Api.login(data.get('pin'))
       .then((response) => {
-        if (response.token) {
-          //Api.useSettings({ token: response.token }); // tinem token-ul in api ptr a-l folosi la urmatoarele apeluri
+        if (response.token) {          
           this.context.setSettings({
             user: { ...response.user, token: response.token },
             cinema: response.cinema,
@@ -53,7 +51,7 @@ export default class FormLogin extends React.Component {
       .catch((error) => this.error(error.message || error));
   }
 
-  render() {
+  render() {    
     return (
       <section className="block blue fullscreen top-center p-3">
         <span className="icon">

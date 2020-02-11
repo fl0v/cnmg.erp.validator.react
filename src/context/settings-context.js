@@ -2,8 +2,8 @@ import React from 'react';
 
 const SettingsContext = React.createContext({
   api: {
-    apiBaseUrl: '', //window.localStorage.getItem('apiBaseUrl'),
-    apiLicense: '', //window.localStorage.getItem('apiLicense'),
+    apiBaseUrl: window.localStorage.getItem('apiBaseUrl'),
+    apiLicense: window.localStorage.getItem('apiLicense'),
   },
   user: {
     id: null,

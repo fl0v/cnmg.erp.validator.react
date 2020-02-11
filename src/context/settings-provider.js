@@ -15,11 +15,6 @@ export default class SettingsContextProvider extends React.Component {
     storageList: this.context.storageList,
   };
 
-  componentDidMount() {
-    window.localStorage.setItem('apiBaseUrl', this.state.api.apiBaseUrl);
-    window.localStorage.setItem('apiLicense', this.state.api.apiLicense);
-  }
-
   haveApiSettings() {
     const { required } = SettingsMeta;
     return required.reduce((has, key) => {
@@ -37,26 +32,26 @@ export default class SettingsContextProvider extends React.Component {
     return this.state.storage.id > 0;
   }
 
-  setSettings(settings) {
-    const all = Object.assign(this.state, settings);
-    Api.useSettings({
-      apiBaseUrl: all.api.apiBaseUrl,
-      apiLicense: all.api.apiLicense,
-      token: all.user.token,
-      storage_id: all.storage.id,
-    });
-    this.setState(settings);
-  }
-
   resetSettings() {
-    //window.localStorage.removeItem('apiBaseUrl');
-    //window.localStorage.removeItem('apiLicense');
+    window.localStorage.removeItem('apiBaseUrl');
+    window.localStorage.removeItem('apiLicense');
     this.setState({
       api: {
         apiBaseUrl: '',
         apiLicense: '',
       },
     });
+  }
+
+  saveToApi() {
+    Api.useSettings({
+      apiBaseUrl: this.state.api.apiBaseUrl,
+      apiLicense: this.state.api.apiLicense,
+      token: this.state.user.token,
+      storage_id: this.state.storage.id,
+    });
+    window.localStorage.setItem('apiBaseUrl', this.state.api.apiBaseUrl);
+    window.localStorage.setItem('apiLicense', this.state.api.apiLicense);
   }
 
   render() {
@@ -69,7 +64,7 @@ export default class SettingsContextProvider extends React.Component {
     ) : (
       this.props.children
     );
-
+    this.saveToApi();
     return (
       <SettingsContext.Provider
         value={{
@@ -78,11 +73,8 @@ export default class SettingsContextProvider extends React.Component {
           cinema: this.state.cinema,
           storage: this.state.storage,
           storageList: this.state.storageList,
-          setSettings: (settings) => this.setSettings(settings),
-          resetSettings: () => {
-            console.log('asd');
-            //this.resetSettings();
-          },
+          setSettings: (settings) => this.setState(settings),
+          resetSettings: () => this.resetSettings(),
           haveApiSettings: () => this.haveApiSettings(),
           haveUser: () => this.haveUser(),
           haveStorage: () => this.haveStorage(),
