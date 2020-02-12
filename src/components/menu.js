@@ -8,6 +8,7 @@ import { ReactComponent as Img } from '/src/res/menu.svg';
 export default class Menu extends Block {
   static contextType = SettingsContext;
   extraClassNames = 'blue top-right';
+  id = 'menu';
 
   handleClickReset(event) {
     event.preventDefault();
@@ -49,11 +50,13 @@ export default class Menu extends Block {
     );
   }
 
-  content() {
+  contentStorageList() {
+    if (!this.context.haveStorageList()) {
+      return;
+    }
     return (
-      <div className="content">
-        {this.contentApiSettings()}
-        {this.contentUser()}
+      <div>
+        StorageList
         <StorageList
           storageList={this.context.storageList}
           setStorage={(storage) =>
@@ -61,6 +64,16 @@ export default class Menu extends Block {
           }
           activeId={this.context.storage.id}
         />
+      </div>
+    );
+  }
+
+  content() {
+    return (
+      <div className="content">
+        {this.contentApiSettings()}
+        {this.contentUser()}
+        {this.contentStorageList()}
       </div>
     );
   }

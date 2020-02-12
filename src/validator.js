@@ -12,7 +12,7 @@ export default class Validator extends React.Component {
         <SettingsContextProvider>
           <Header />
           <FormValidate />
-          <Menu />
+          <Menu fullscreen="true" />
         </SettingsContextProvider>
       </div>
     );

@@ -5,7 +5,7 @@ export default function Header() {
   const { storage, cinema } = React.useContext(SettingsContext);
   return (
     <h1 className="m-3">
-      {storage.name} {cinema.name}
+      {storage.name && storage.name} {cinema.name && cinema.name}
     </h1>
   );
 }

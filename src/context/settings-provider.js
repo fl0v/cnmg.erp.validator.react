@@ -32,6 +32,10 @@ export default class SettingsContextProvider extends React.Component {
     return this.state.storage.id > 0;
   }
 
+  haveStorageList() {
+    return this.state.storageList && this.state.storageList.length > 0;
+  }
+
   resetSettings() {
     window.localStorage.removeItem('apiBaseUrl');
     window.localStorage.removeItem('apiLicense');
@@ -59,7 +63,7 @@ export default class SettingsContextProvider extends React.Component {
       <FormApiSettings />
     ) : !this.haveUser() ? (
       <FormLogin />
-    ) : !this.haveStorage() ? (
+    ) : !this.haveStorage() && this.haveStorageList() ? (
       <SelectStorage />
     ) : (
       this.props.children
@@ -78,6 +82,7 @@ export default class SettingsContextProvider extends React.Component {
           haveApiSettings: () => this.haveApiSettings(),
           haveUser: () => this.haveUser(),
           haveStorage: () => this.haveStorage(),
+          haveStorageList: () => this.haveStorageList(),
         }}
       >
         {content}

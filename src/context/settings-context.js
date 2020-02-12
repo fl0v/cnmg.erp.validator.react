@@ -26,6 +26,7 @@ const SettingsContext = React.createContext({
   haveApiSettings: () => {},
   haveUser: () => {},
   haveStorage: () => {},
+  haveStorageList: () => {},
 });
 
 const SettingsMeta = {

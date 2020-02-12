@@ -3,6 +3,19 @@ body {
   text-align: center;
 }
 
+#menu {
+  z-index: 9;
+}
+
+form.code {
+  position:relative;
+   z-index: 8;
+}
+form.code .form-group {
+  max-width: 20rem;
+}
+
+
 .block.collapsed .content {
   display: none;
 }
@@ -53,8 +66,4 @@ body {
   top: 0;
   left: 0;
   text-align: left;
-}
-
-form.code .form-group {
-  max-width: 20rem;
 }
