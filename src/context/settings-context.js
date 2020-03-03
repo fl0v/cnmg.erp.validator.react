@@ -30,16 +30,6 @@ const SettingsContext = React.createContext({
 });
 
 const SettingsMeta = {
-  labels: {
-    apiBaseUrl: 'Api url',
-    apiLicense: 'License',
-  },
-  types: {
-    apiLicense: 'text',
-  },
-  visible: ['apiBaseUrl', 'apiLicense'],
-  editable: ['apiBaseUrl', 'apiLicense'],
   required: ['apiBaseUrl', 'apiLicense'],
 };
-
 export { SettingsContext, SettingsMeta };

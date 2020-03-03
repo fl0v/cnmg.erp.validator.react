@@ -4,8 +4,8 @@ import { SettingsContext } from '/src/context/settings-context';
 export default function Header() {
   const { storage, cinema } = React.useContext(SettingsContext);
   return (
-    <h1 className="m-3">
-      {storage.name && storage.name} {cinema.name && cinema.name}
-    </h1>
+    <h4 className="header m-3">
+      {cinema.name && cinema.name} {storage.name && storage.name}
+    </h4>
   );
 }

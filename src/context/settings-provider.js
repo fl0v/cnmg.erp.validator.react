@@ -15,13 +15,26 @@ export default class SettingsContextProvider extends React.Component {
     storageList: this.context.storageList,
   };
 
+  tested = false;
+
   haveApiSettings() {
     const { required } = SettingsMeta;
-    return required.reduce((has, key) => {
+    let has = required.reduce((has, key) => {
       has =
         has && this.state.api[key] && this.state.api[key].toString().length > 0;
       return has;
     }, true);
+    if (has && !this.tested) {
+      this.tested = true;
+      Api.ping()
+        .then((response) => {
+          if (response.cinema) {
+            this.context.cinema = response.cinema;
+          }
+        })
+        .catch((error) => this.resetSettings());
+    }
+    return has;
   }
 
   haveUser() {
@@ -36,7 +49,13 @@ export default class SettingsContextProvider extends React.Component {
     return this.state.storageList && this.state.storageList.length > 0;
   }
 
+  setSettings(settings) {
+    this.tested = true;
+    this.setState(settings);
+  }
+
   resetSettings() {
+    this.tested = false;
     window.localStorage.removeItem('apiBaseUrl');
     window.localStorage.removeItem('apiLicense');
     this.setState({
@@ -77,7 +96,7 @@ export default class SettingsContextProvider extends React.Component {
           cinema: this.state.cinema,
           storage: this.state.storage,
           storageList: this.state.storageList,
-          setSettings: (settings) => this.setState(settings),
+          setSettings: (settings) => this.setSettings(settings),
           resetSettings: () => this.resetSettings(),
           haveApiSettings: () => this.haveApiSettings(),
           haveUser: () => this.haveUser(),

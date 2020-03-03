@@ -1,6 +1,6 @@
 import React from 'react';
 import { ApiClass } from '/src/api';
-import { SettingsContext, SettingsMeta } from '/src/context/settings-context';
+import { SettingsContext } from '/src/context/settings-context';
 import FormRow from '/src/components/form-row';
 import { ReactComponent as Img } from '/src/res/settings.svg';
 
@@ -41,36 +41,49 @@ export default class FormApiSettings extends React.Component {
       .catch((error) => this.error(error.message || error));
   }
 
-  render() {
+  contentForm() {
     const { api } = this.context;
-    const { labels, editable, types } = SettingsMeta;
     return (
-      <section className="block blue fullscreen p-3 top-right">
+      <div>
+        <FormRow
+          type="text"
+          label="Api url"
+          name="apiBaseUrl"
+          value={api.apiBaseUrl}
+          disabled={this.props.disabled}
+          className="text-center"
+        />
+        <FormRow
+          type="text"
+          label="License"
+          name="apiLicense"
+          value={api.apiLicense}
+          disabled={this.props.disabled}
+          className="text-center"
+        />
+      </div>
+    );
+  }
+
+  render() {
+    return this.props.disabled ? (
+      this.contentForm()
+    ) : (
+      <section className="block blue fullscreen p-3">
         <span className="icon">
           <Img />
         </span>
-
-        <div className="content">
-          <form onSubmit={this.handleSubmit}>
-            {editable.map((key) => (
-              <FormRow
-                key={key}
-                type={types[key]}
-                label={labels[key]}
-                name={key}
-                value={api[key]}
-              />
-            ))}
-            <button type="submit" className="btn btn-success w-100">
-              Next
-            </button>
-          </form>
+        <form className="content" onSubmit={this.handleSubmit}>
+          {this.contentForm()}
+          <button type="submit" className="btn btn-success w-100">
+            Next
+          </button>
           {this.state.error.length > 0 && (
             <div className="alert alert-danger text-center my-3">
               {this.state.error}
             </div>
           )}
-        </div>
+        </form>
       </section>
     );
   }

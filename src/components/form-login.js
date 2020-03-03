@@ -1,6 +1,8 @@
 import React from 'react';
 import FormRow from '/src/components/form-row';
 import { Api } from '/src/api';
+import Header from '/src/components/header';
+import FormApiSettings from '/src/components/form-api-settings';
 import { SettingsContext } from '/src/context/settings-context';
 import { ReactComponent as Img } from '/src/res/auth.svg';
 
@@ -25,12 +27,12 @@ export default class FormLogin extends React.Component {
   }
 
   handleClickReset(event) {
-    event.preventDefault();   
+    event.preventDefault();
     this.context.resetSettings();
   }
 
   handleSubmit(event) {
-    event.preventDefault();    
+    event.preventDefault();
     this.setState({ loading: true });
 
     const form = event.target;
@@ -38,7 +40,7 @@ export default class FormLogin extends React.Component {
 
     Api.login(data.get('pin'))
       .then((response) => {
-        if (response.token) {          
+        if (response.token) {
           this.context.setSettings({
             user: { ...response.user, token: response.token },
             cinema: response.cinema,
@@ -51,13 +53,15 @@ export default class FormLogin extends React.Component {
       .catch((error) => this.error(error.message || error));
   }
 
-  render() {    
+  render() {
     return (
-      <section className="block blue fullscreen top-center p-3">
+      <section className="block blue fullscreen p-3">
         <span className="icon">
           <Img />
         </span>
         <div className="content">
+          <FormApiSettings disabled={true} />
+          <Header />
           <form onSubmit={this.handleSubmit}>
             <FormRow
               type="password"
@@ -75,12 +79,12 @@ export default class FormLogin extends React.Component {
             >
               Reset
             </button>
+            {this.state.error.length > 0 && (
+              <div className="alert alert-danger text-center my-3">
+                {this.state.error}
+              </div>
+            )}
           </form>
-          {this.state.error.length > 0 && (
-            <div className="alert alert-danger text-center my-3">
-              {this.state.error}
-            </div>
-          )}
         </div>
       </section>
     );
